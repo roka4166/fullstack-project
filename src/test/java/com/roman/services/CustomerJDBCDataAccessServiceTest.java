@@ -188,7 +188,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainersUnitTest {
 
         // When age is name
         Customer update = new Customer();
-        update.setId((long) id);
+        update.setId(id);
         update.setName(newName);
 
         underTest.updateCustomer(update);
@@ -225,7 +225,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainersUnitTest {
 
         // When email is changed
         Customer update = new Customer();
-        update.setId((long) id);
+        update.setId(id);
         update.setEmail(newEmail);
 
         underTest.updateCustomer(update);
@@ -262,7 +262,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainersUnitTest {
 
         // When age is changed
         Customer update = new Customer();
-        update.setId((long) id);
+        update.setId(id);
         update.setAge(newAge);
 
         underTest.updateCustomer(update);
@@ -297,7 +297,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainersUnitTest {
 
         // When update with new name, age and email
         Customer update = new Customer();
-        update.setId((long) id);
+        update.setId(id);
         update.setName("foo");
         String newEmail = UUID.randomUUID().toString();
         update.setEmail(newEmail);
