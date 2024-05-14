@@ -1,10 +1,13 @@
 backend/HELP.md
+.idea/
 target/
 !backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 backend/src/main/resources
+
+node_modules
 
 docker-compose.yml
 Dockerrun.aws.json
