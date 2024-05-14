@@ -10,6 +10,9 @@
 	</parent>
 	<groupId>com.roman</groupId>
 	<artifactId>fullstack-project</artifactId>
+	<organization>
+		<name>roka4166</name>
+	</organization>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>fullstack-project</name>
 	<description>Demo project for Spring Boot</description>
@@ -92,7 +95,34 @@
 
 	<build>
 		<plugins>
-		<plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.3.1</version>
+				<configuration>
+					<from>
+						<image>eclipse-temurin:17</image>
+						<platforms>
+							<platform>
+								<architecture>arm64</architecture>
+								<os>linux</os>
+							</platform>
+							<platform>
+								<architecture>amd64</architecture>
+								<os>linux</os>
+							</platform>
+						</platforms>
+					</from>
+					<to>
+						<image>docker.io/${organization.name}/${project.artifactId}:${project.version}</image>
+						<tags>
+							<tag>latest</tag>
+						</tags>
+					</to>
+				</configuration>
+			</plugin>
+
+			<plugin>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-maven-plugin</artifactId>
 			<executions>

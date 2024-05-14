@@ -7,6 +7,7 @@ target/
 src/main/resources
 
 docker-compose.yml
+Dockerrun.aws.json
 
 .mvn
 mvnw
