@@ -18,4 +18,9 @@ public class TestcontainersTest extends AbstractTestContainersUnitTest{
         assertThat(container.isCreated()).isTrue();
         assertThat(container.isRunning()).isTrue();
     }
+    @Test
+    void flywayTest(){
+        Flyway flyway = Flyway.configure().dataSource(container.getJdbcUrl(), container.getUsername(), container.getPassword()).load();
+        flyway.migrate();
+    }
 }
