@@ -1,18 +1,18 @@
-HELP.md
+backend/HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
+!backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-src/main/resources
+backend/src/main/resources
 
 docker-compose.yml
 Dockerrun.aws.json
 
-.mvn
-mvnw
-mvnw.cmd
-/src/main/resources
+backend/.mvn
+backend/mvnw
+backend/mvnw.cmd
+/backend/src/main/resources
 ### STS ###
 .apt_generated
 .classpath
@@ -23,7 +23,7 @@ mvnw.cmd
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+backend/.idea
 *.iws
 *.iml
 *.ipr
