@@ -23,7 +23,7 @@ public abstract class AbstractTestContainersUnitTest {
     }
     @Container
     protected static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("postgres-unit-test")
+            .withDatabaseName("postgres")
             .withUsername("postgres")
             .withPassword("postgres");
 
