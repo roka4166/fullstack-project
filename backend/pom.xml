@@ -101,6 +101,7 @@
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.3.1</version>
 				<configuration>
+					<skip>true</skip>
 					<from>
 						<image>eclipse-temurin:17</image>
 						<platforms>
@@ -121,6 +122,11 @@
 						</tags>
 					</to>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>none</phase>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
