@@ -14,7 +14,9 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: customer
         ports:
           - 5332:5432
         options: >-
