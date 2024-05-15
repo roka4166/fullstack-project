@@ -1,5 +1,5 @@
 package com.roman.repositories;
-import com.roman.AbstractTestContainersUnitTest;
+import com.roman.AbstractTestContainers;
 import com.roman.models.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class CustomerRepositoryTest extends AbstractTestContainersUnitTest {
+class CustomerRepositoryTestContainers extends AbstractTestContainers {
     @Autowired
     private CustomerRepository underTest;
     @Test

@@ -1,6 +1,6 @@
 package com.roman.services;
 
-import com.roman.AbstractTestContainersUnitTest;
+import com.roman.AbstractTestContainers;
 import com.roman.models.Customer;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-class CustomerJDBCDataAccessServiceTest extends AbstractTestContainersUnitTest {
+class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers {
 
     private CustomerJDBCDataAccessService underTest;
     private final CustomerRowMapper mapper = new CustomerRowMapper();

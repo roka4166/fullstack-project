@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Testcontainers
-public class TestcontainersTest extends AbstractTestContainersUnitTest{
+public class TestcontainersTest extends AbstractTestContainers {
     @Test
     void canStartPostgresDB() {
         assertThat(container.isCreated()).isTrue();
@@ -15,7 +15,8 @@ public class TestcontainersTest extends AbstractTestContainersUnitTest{
     }
     @Test
     void flywayTest(){
-        Flyway flyway = Flyway.configure().dataSource(container.getJdbcUrl(), container.getUsername(), container.getPassword()).load();
+        Flyway flyway = Flyway.configure().
+                dataSource(container.getJdbcUrl(), container.getUsername(), container.getPassword()).load();
         flyway.migrate();
     }
 }

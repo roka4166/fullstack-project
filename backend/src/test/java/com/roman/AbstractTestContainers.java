@@ -14,16 +14,18 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import javax.sql.DataSource;
 
 @Testcontainers
-public abstract class AbstractTestContainersUnitTest {
+public abstract class AbstractTestContainers {
 
     @BeforeAll
     static void beforeAll(){
-        Flyway flyway = Flyway.configure().dataSource(container.getJdbcUrl(), container.getUsername(), container.getPassword()).load();
+        Flyway flyway = Flyway.configure()
+                .dataSource(container.getJdbcUrl(), container.getUsername(), container.getPassword())
+                .locations("filesystem:fullstack-project/backend/src/main/resources/db/migration").load();
         flyway.migrate();
     }
     @Container
     protected static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("customer")
+            .withDatabaseName("postgres")
             .withUsername("postgres")
             .withPassword("postgres");
 
