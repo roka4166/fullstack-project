@@ -35,5 +35,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'maven'
+      - uses: joshuaavalon/flyway-action@v3.0.0
+        with:
+          url: jdbc:postgresql://postgres:5332/postgres
+          user: postgres
+          password: postgres
       - name: Build and run Unit/Integration Tests with Maven
         run: mvn -ntp -B verify
