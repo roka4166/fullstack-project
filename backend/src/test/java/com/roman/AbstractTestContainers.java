@@ -19,8 +19,7 @@ public abstract class AbstractTestContainers {
     @BeforeAll
     static void beforeAll(){
         Flyway flyway = Flyway.configure()
-                .dataSource(container.getJdbcUrl(), container.getUsername(), container.getPassword())
-                .locations("filesystem:fullstack-project/backend/src/main/resources/db/migration").load();
+                .dataSource(container.getJdbcUrl(), container.getUsername(), container.getPassword()).load();
         flyway.migrate();
     }
     @Container
