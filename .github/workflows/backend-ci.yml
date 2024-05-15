@@ -1,9 +1,9 @@
 name: CI - Build Backend
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - master
     paths:
       - backend/**
 
@@ -12,11 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15.1
+        image: postgres
         env:
-          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
         ports:
           - 5332:5432
         options: >-

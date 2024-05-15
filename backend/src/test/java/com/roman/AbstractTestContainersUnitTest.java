@@ -35,7 +35,7 @@ public abstract class AbstractTestContainersUnitTest {
     }
 
     private static DataSource getDataSource(){
-        DataSourceBuilder builder = DataSourceBuilder.create()
+        DataSourceBuilder<?> builder = DataSourceBuilder.create()
                 .driverClassName(container.getDriverClassName())
                 .url(container.getJdbcUrl())
                 .username(container.getUsername())
