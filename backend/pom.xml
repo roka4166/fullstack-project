@@ -10,14 +10,14 @@
 	</parent>
 	<groupId>com.roman</groupId>
 	<artifactId>fullstack-project</artifactId>
-	<organization>
-		<name>roka4166</name>
-	</organization>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>fullstack-project</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
+		<docker.username>roka4166</docker.username>
+		<docker.image.name>fullstack-project</docker.image.name>
+		<docker.image.tag/>
 	</properties>
 
 	<dependencies>
@@ -115,7 +115,7 @@
 						</platforms>
 					</from>
 					<to>
-						<image>docker.io/${organization.name}/${project.artifactId}:${project.version}</image>
+						<image>docker.io/${docker.username}/${docker.image.name}:${docker.image.tag}</image>
 						<tags>
 							<tag>latest</tag>
 						</tags>
