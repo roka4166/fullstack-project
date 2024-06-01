@@ -13,6 +13,7 @@ public class TestcontainersTest extends AbstractTestContainers {
         assertThat(container.isCreated()).isTrue();
         assertThat(container.isRunning()).isTrue();
     }
+    
     @Test
     void flywayTest(){
         Flyway flyway = Flyway.configure().
