@@ -43,7 +43,6 @@ public abstract class AbstractTestContainers {
                 .password(container.getPassword());
         return builder.build();
     }
-
     protected static JdbcTemplate getJdbcTemplate(){
         return new JdbcTemplate(getDataSource());
     }
