@@ -49,10 +49,10 @@ jobs:
       - name: Update Dockerrun.aws.json with new tag number
         run: |
           echo "Dockerrun.aws.json before updating tag"
-          cat Dockerrun.aws.json
-          sed -i -E 's_(roka4166/fullstack-project:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' Dockerrun.aws.json
+          cat ../backend/Dockerrun.aws.json
+          sed -i -E 's_(roka4166/fullstack-project:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' ../backend/Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating tag"
-          cat Dockerrun.aws.json
+          cat ../backend/Dockerrun.aws.json
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
