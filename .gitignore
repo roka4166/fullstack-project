@@ -8,7 +8,6 @@ target/
 node_modules
 
 docker-compose.yml
-Dockerrun.aws.json
 
 backend/.mvn
 backend/mvnw
