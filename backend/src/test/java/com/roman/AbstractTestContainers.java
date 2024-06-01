@@ -47,6 +47,5 @@ public abstract class AbstractTestContainers {
     protected static JdbcTemplate getJdbcTemplate(){
         return new JdbcTemplate(getDataSource());
     }
-
     protected static final Faker FAKER = new Faker();
 }
