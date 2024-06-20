@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import SidebarWithHeader from './components/shared/SideBar';
-import { Wrap, WrapItem, Spinner, Text} from '@chakra-ui/react';
+import { Wrap, WrapItem, Spinner, Text, ChakraProvider} from '@chakra-ui/react';
 import { getCustomers } from './services/client';
 import CardWithImage from './components/Card';
+import ProductSimple from './components/Test'
 function App() {
   
   const [customers, setCustomers] = useState([]);
@@ -12,7 +13,6 @@ function App() {
     setLoading(true);
     getCustomers()
       .then(res => {
-        console.log('Fetched customers:', res.data);
         setCustomers(res.data);
       })
       .catch(err => {
@@ -23,7 +23,7 @@ function App() {
       });
   }, []);
 
-  console.log('Customers state:', customers);
+  console.log(customers);
 
   if (loading) {
     return (
@@ -49,19 +49,14 @@ function App() {
 
   return (
     <SidebarWithHeader>
-      <Wrap>
-        {(() => {
-          const items = [];
-          for (let i = 0; i < customers.length; i++) {
-            items.push(
-              <WrapItem key={customers[i].id}>
-                <CardWithImage {...customers[i]} />
-              </WrapItem>
-            );
-          }
-          return items;
-        })()}
+      <Wrap justify={"center"} spacing={"30px"}>
+          {customers.map((customer, index) => (
+          <WrapItem key={index}>
+            <CardWithImage {...customer}/>
+          </WrapItem>
+          ))}
       </Wrap>
+      <ProductSimple></ProductSimple>
     </SidebarWithHeader>
   );
 }

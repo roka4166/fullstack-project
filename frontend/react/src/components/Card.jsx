@@ -9,15 +9,15 @@ import {
   Flex,
   Text,
   Stack,
-  Button,
+  Tag,
   useColorModeValue,
 } from '@chakra-ui/react'
 
-export default function CardWithImage() {
+export default function CardWithImage({id, name, email, age, ...rest}) {
   return (
     <Center py={6}>
       <Box
-        maxW={'270px'}
+        maxW={'300px'}
         w={'full'}
         bg={useColorModeValue('white', 'gray.800')}
         boxShadow={'2xl'}
@@ -46,6 +46,7 @@ export default function CardWithImage() {
 
         <Box p={6}>
           <Stack spacing={0} align={'center'} mb={5}>
+          <Tag borderRadius={"full"}>{id}</Tag>
             <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
               {name}
             </Heading>

@@ -181,7 +181,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   )
 }
 
-const SidebarWithHeader = () => {
+const SidebarWithHeader = ({children}) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
@@ -201,7 +201,7 @@ const SidebarWithHeader = () => {
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
-        {/* Content */}
+        {children}
       </Box>
     </Box>
   )
