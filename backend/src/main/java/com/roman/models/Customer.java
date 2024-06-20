@@ -28,20 +28,26 @@ public class Customer {
             nullable = false
     )
     private Integer age;
+    @Column(
+            nullable = false
+    )
+    private String gender;
 
     public Customer(){}
 
-    public Customer(Integer id, String name, String email, Integer age) {
+    public Customer(Integer id, String name, String email, Integer age, String gender) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.age = age;
+        this.gender = gender;
     }
 
-    public Customer(String name, String email, Integer age) {
+    public Customer(String name, String email, Integer age, String gender) {
         this.name = name;
         this.email = email;
         this.age = age;
+        this.gender = gender;
     }
 
 
@@ -75,5 +81,13 @@ public class Customer {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

@@ -47,7 +47,7 @@ class CustomerServiceTest {
     @Test
     void itShouldGetCustomer() {
         int id = 1;
-        Customer customer = new Customer(id, "hello", "email", 14);
+        Customer customer = new Customer(id, "hello", "email", 14, "MALE");
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         Customer actual = underTest.getCustomer(id);
@@ -68,8 +68,9 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         String email = "email";
+        String gender = "MALE";
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest("alex", email, 19);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest("alex", email, 19, gender);
 
         when(customerDAO.existsPersonWithEmail(email)).thenReturn(false);
         //When
@@ -91,8 +92,9 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         String email = "email";
+        String gender = "MALE";
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest("alex", email, 19);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest("alex", email, 19, gender);
 
         when(customerDAO.existsPersonWithEmail(email)).thenReturn(true);
         //When
@@ -132,7 +134,8 @@ class CustomerServiceTest {
     void itShouldUpdateCustomer() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "hello", "email", 14);
+        String gender = "MALE";
+        Customer customer = new Customer(id, "hello", "email", 14, gender);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         String updatedEmail = "email2";
@@ -155,7 +158,8 @@ class CustomerServiceTest {
     void itShouldUpdateCustomerName() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "hello", "email", 14);
+        String gender = "MALE";
+        Customer customer = new Customer(id, "hello", "email", 14, gender);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         CustomerUpdateRequest request = new CustomerUpdateRequest("hello2", null, null);
@@ -176,7 +180,8 @@ class CustomerServiceTest {
     void itShouldUpdateCustomerEmail() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "hello", "email", 14);
+        String gender = "MALE";
+        Customer customer = new Customer(id, "hello", "email", 14, gender);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         String updatedEmail = "email2";
@@ -199,7 +204,8 @@ class CustomerServiceTest {
     void itShouldUpdateCustomerAge() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "hello", "email", 14);
+        String gender = "MALE";
+        Customer customer = new Customer(id, "hello", "email", 14, gender);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         CustomerUpdateRequest request = new CustomerUpdateRequest(null, null, 23);
@@ -220,7 +226,8 @@ class CustomerServiceTest {
     void itShouldThrowWhenEmailIsTaken() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "hello", "email", 14);
+        String gender = "MALE";
+        Customer customer = new Customer(id, "hello", "email", 14, gender);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         String email = "takenEmail";
@@ -237,7 +244,8 @@ class CustomerServiceTest {
     void itShouldThrowWhenThereIsNoChanges() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "hello", "email", 14);
+        String gender = "MALE";
+        Customer customer = new Customer(id, "hello", "email", 14, gender);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         String email = "takenEmail";

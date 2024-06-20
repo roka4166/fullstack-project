@@ -31,7 +31,8 @@ public class CustomerIT {
         String name = faker.name().name();
         String email = faker.internet().safeEmailAddress();
         int age = RANDOM.nextInt(1, 100);
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age);
+        String gender = "MALE";
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age, gender);
 
         webTestClient.post()
                 .uri(URI)
@@ -53,7 +54,7 @@ public class CustomerIT {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, age);
+        Customer expectedCustomer = new Customer(name, email, age, gender);
 
         assertThat(allCustomers).usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -82,7 +83,8 @@ public class CustomerIT {
         String name = faker.name().name();
         String email = faker.internet().safeEmailAddress();
         int age = RANDOM.nextInt(1, 100);
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age);
+        String gender = "MALE";
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age, gender);
 
         webTestClient.post()
                 .uri(URI)
@@ -128,13 +130,15 @@ public class CustomerIT {
         String name = faker.name().name();
         String email = faker.internet().safeEmailAddress();
         int age = RANDOM.nextInt(1, 100);
+        String gender = "MALE";
 
         String updatedName = faker.name().name();
         String updatedEmail = faker.internet().safeEmailAddress();
         int updatedAge = RANDOM.nextInt(1, 100);
+        String updatedGender = "FEMALE";
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age);
-        CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(updatedName, updatedEmail, updatedAge);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age, gender);
+        CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(updatedName, updatedEmail, updatedAge, updatedGender);
 
         webTestClient.post()
                 .uri(URI)

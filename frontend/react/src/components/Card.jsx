@@ -13,7 +13,8 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 
-export default function CardWithImage({id, name, email, age, ...rest}) {
+export default function CardWithImage({id, name, email, age, gender, ...rest}) {
+  const imageGender = gender === 'MALE' ? 'men' : 'women';
   return (
     <Center py={6}>
       <Box
@@ -27,7 +28,7 @@ export default function CardWithImage({id, name, email, age, ...rest}) {
           h={'120px'}
           w={'full'}
           src={
-            'https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
+            'https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=pexels-padrinan-255379.jpg&fm=jpg'
           }
           objectFit="cover"
           alt="#"
@@ -36,7 +37,7 @@ export default function CardWithImage({id, name, email, age, ...rest}) {
           <Avatar
             size={'xl'}
             src={
-              'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
+              `https://randomuser.me/api/portraits/med/${imageGender}/${id}.jpg`
             }
             css={{
               border: '2px solid white',
@@ -51,7 +52,7 @@ export default function CardWithImage({id, name, email, age, ...rest}) {
               {name}
             </Heading>
             <Text color={'gray.500'}>{email}</Text>
-            <Text color={'gray.500'}>{age}</Text>
+            <Text color={'gray.500'}> Age : {age} | {gender}</Text>
           </Stack>
         </Box>
       </Box>
