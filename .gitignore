@@ -6,6 +6,17 @@ target/
 !**/src/test/**/target/
 
 node_modules
+frontend/react/public
+frontend/react/README.md
+backend/package.json
+backend/package-lock.json
+frontend/react/.env
+frontend/react/.eslintrc.cjs
+frontend/react/package-lock.json
+frontend/react/package.json
+frontend/package.json
+frontend/react/vite.config.js
+
 
 docker-compose.yml
 

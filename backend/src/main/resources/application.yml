@@ -1,4 +1,6 @@
-
+cors:
+  allowed-origins: "*"
+  allowed-methods: "*"
 
 server:
   port: 8080

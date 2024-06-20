@@ -1,0 +1,10 @@
+import axios from 'axios';
+
+export const getCustomers = async () => {
+    try {
+       return await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`);
+    } catch (e) {
+        console.error("Error fetching customers:", e);
+        throw e; // Optionally, you can re-throw the error after logging it
+    }
+};
