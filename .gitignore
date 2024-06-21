@@ -17,9 +17,6 @@ frontend/react/package.json
 frontend/package.json
 frontend/react/vite.config.js
 
-
-docker-compose.yml
-
 backend/.mvn
 backend/mvnw
 backend/mvnw.cmd

@@ -1,0 +1,44 @@
+services:
+  db:
+    container_name: postgres
+    image: postgres:15.1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5332:5432"
+    networks:
+      - db
+    restart: unless-stopped
+  fullstack-project:
+    container_name: backend-api
+    image: roka4166/fullstack-project
+    ports:
+      - "8088:8080"
+    networks:
+      - db
+    depends_on:
+      - db
+    restart: unless-stopped
+    command:
+      - --spring.datasource.url=jdbc:postgresql://db:5432/postgres
+  frontend-react:
+    container_name: frontend-react
+    image: roka4166/frontend-react
+    build:
+      context: frontend/react
+    ports:
+      - "3000:5173"
+    depends_on:
+      - fullstack-project
+    restart: unless-stopped
+
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  db:
