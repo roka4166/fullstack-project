@@ -26,7 +26,7 @@ class CustomerRowMapperTest {
         //When
         Customer actual = rowMapper.mapRow(resultSet, 1);
         //Then
-        Customer expected = new Customer(1, "alex", "email", 23, "MALE");
+        Customer expected = new Customer(1, "alex", "email", "password", 23, "MALE");
 
         assertThat(actual).isEqualToComparingFieldByField(expected);
 

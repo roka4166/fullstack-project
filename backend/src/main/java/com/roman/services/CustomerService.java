@@ -9,16 +9,20 @@ import com.roman.utils.CustomerRegistrationRequest;
 import com.roman.utils.CustomerUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CustomerService {
-    private CustomerDAO customerDAO;
+    private final CustomerDAO customerDAO;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public CustomerService(@Qualifier("jdbc") CustomerDAO customerDAO) {
+    public CustomerService(@Qualifier("jdbc") CustomerDAO customerDAO, PasswordEncoder passwordEncoder) {
         this.customerDAO = customerDAO;
+        this.passwordEncoder = passwordEncoder;
     }
     public List<Customer> getAllCustomers() {
         return customerDAO.selectAllCustomers();
@@ -37,7 +41,11 @@ public class CustomerService {
             throw new DuplicateResourceException("email already taken");
         }
         customerDAO.insertCustomer(
-                new Customer(request.name(), request.email(), request.age(), request.gender())
+                new Customer(request.name(),
+                        request.email(),
+                        passwordEncoder.encode(request.password()),
+                        request.age(),
+                        request.gender())
         );
     }
 

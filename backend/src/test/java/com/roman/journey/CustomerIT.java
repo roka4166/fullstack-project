@@ -32,7 +32,7 @@ public class CustomerIT {
         String email = faker.internet().safeEmailAddress();
         int age = RANDOM.nextInt(1, 100);
         String gender = "MALE";
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email,"password", age, gender);
 
         webTestClient.post()
                 .uri(URI)
@@ -54,7 +54,7 @@ public class CustomerIT {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, age, gender);
+        Customer expectedCustomer = new Customer(name, email, "password", age, gender);
 
         assertThat(allCustomers).usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -84,7 +84,7 @@ public class CustomerIT {
         String email = faker.internet().safeEmailAddress();
         int age = RANDOM.nextInt(1, 100);
         String gender = "MALE";
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
 
         webTestClient.post()
                 .uri(URI)
@@ -137,8 +137,8 @@ public class CustomerIT {
         int updatedAge = RANDOM.nextInt(1, 100);
         String updatedGender = "FEMALE";
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, age, gender);
-        CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(updatedName, updatedEmail, updatedAge, updatedGender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
+        CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(updatedName, updatedEmail, "password", updatedAge, updatedGender);
 
         webTestClient.post()
                 .uri(URI)

@@ -32,8 +32,10 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
 
     @Override
     public void insertCustomer(Customer customer) {
-        String sql = "INSERT INTO customer(name, email, age, gender) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getAge(), customer.getGender());
+        String sql = "INSERT INTO customer(name, email, password, age, gender) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, customer.getName(),
+                customer.getEmail(), customer.getPassword(),
+                customer.getAge(), customer.getGender());
     }
 
     @Override
@@ -74,5 +76,11 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
             String sql = "UPDATE customer SET gender = ? WHERE id = ?";
             jdbcTemplate.update(sql, customer.getGender(), customer.getId());
         }
+    }
+
+    @Override
+    public Optional<Customer> selectUserByEmail(String email) {
+        String sql = "SELECT * FROM customer WHERE email = ?";
+        return jdbcTemplate.query(sql, customerRowMapper, email).stream().findFirst();
     }
 }
