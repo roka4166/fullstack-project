@@ -1,5 +1,6 @@
 package com.roman.controllers;
 
+import com.roman.DTO.CustomerDTO;
 import com.roman.jwt.JWTUtil;
 import com.roman.models.Customer;
 import com.roman.services.CustomerService;
@@ -25,19 +26,18 @@ public class CustomerController{
     }
 
     @GetMapping
-    public List<Customer> getCustomers() {
+    public List<CustomerDTO> getCustomers() {
         return customerService.getAllCustomers();
     }
 
     @GetMapping("{customerId}")
-    public Customer getCustomer(@PathVariable("customerId") Integer customerId) {
+    public CustomerDTO getCustomer(@PathVariable("customerId") Integer customerId) {
         return customerService.getCustomer(customerId);
     }
     @PostMapping
     public ResponseEntity<?> registerCustomer(@RequestBody CustomerRegistrationRequest request){
         customerService.addCustomer(request);
         String jwtToken = jwtUtil.issueToken(request.email(), "ROLE_USER");
-        System.out.println(jwtToken);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, jwtToken).build();
     }

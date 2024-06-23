@@ -51,6 +51,7 @@ public class Customer implements UserDetails {
         this.email = email;
         this.age = age;
         this.gender = gender;
+        this.password = password;
     }
 
     public Customer(String name, String email, String password, Integer age, String gender) {

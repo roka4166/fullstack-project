@@ -1,5 +1,6 @@
 package com.roman.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -23,7 +24,7 @@ public class JWTUtil {
         return issueToken(subject, Map.of("scopes", scopes));
     }
     public String issueToken(String subject, Map<String, Object> claims){
-        String jwt = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuer("roka")
@@ -31,7 +32,28 @@ public class JWTUtil {
                 .setExpiration(Date.from(Instant.now().plus(15, ChronoUnit.DAYS)))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
-        return jwt;
+    }
+
+    public String getSubject(String token){
+        return getClaims(token).getSubject();
+    }
+
+    public boolean isTokenValid(String jwt, String username){
+        String subject = getSubject(jwt);
+        return subject.equals(username) && !isTokenExpired(jwt);
+    }
+
+    public boolean isTokenExpired(String jwt){
+        return getClaims(jwt).getExpiration().before(Date.from(Instant.now()));
+    }
+
+    private Claims getClaims(String token){
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     private Key getSigningKey(){

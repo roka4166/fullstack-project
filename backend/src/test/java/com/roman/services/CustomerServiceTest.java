@@ -1,6 +1,8 @@
 package com.roman.services;
 
 import com.roman.DAO.CustomerDAO;
+import com.roman.DTO.CustomerDTO;
+import com.roman.DTO.CustomerDTOMapper;
 import com.roman.exceptions.DuplicateResourceException;
 import com.roman.exceptions.RequestValidationException;
 import com.roman.exceptions.ResourceNotFoundException;
@@ -30,9 +32,11 @@ class CustomerServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    private final CustomerDTOMapper customerDTOMapper = new CustomerDTOMapper();
+
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDAO, passwordEncoder);
+        underTest = new CustomerService(customerDAO, passwordEncoder, customerDTOMapper);
     }
 
     @Test
@@ -48,10 +52,12 @@ class CustomerServiceTest {
         int id = 1;
         Customer customer = new Customer(id, "hello", "email", "password", 14, "MALE");
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        CustomerDTO expected = customerDTOMapper.apply(customer);
         //When
-        Customer actual = underTest.getCustomer(id);
+        CustomerDTO actual = underTest.getCustomer(id);
         //Then
-        assertThat(actual).isEqualTo(customer);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test

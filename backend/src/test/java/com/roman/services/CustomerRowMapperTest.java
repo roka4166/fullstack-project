@@ -23,6 +23,7 @@ class CustomerRowMapperTest {
         when(resultSet.getString("email")).thenReturn("email");
         when(resultSet.getInt("age")).thenReturn(23);
         when(resultSet.getString("gender")).thenReturn("MALE");
+        when(resultSet.getString("password")).thenReturn("password");
         //When
         Customer actual = rowMapper.mapRow(resultSet, 1);
         //Then

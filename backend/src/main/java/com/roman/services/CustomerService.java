@@ -1,6 +1,8 @@
 package com.roman.services;
 
 import com.roman.DAO.CustomerDAO;
+import com.roman.DTO.CustomerDTO;
+import com.roman.DTO.CustomerDTOMapper;
 import com.roman.exceptions.DuplicateResourceException;
 import com.roman.exceptions.RequestValidationException;
 import com.roman.exceptions.ResourceNotFoundException;
@@ -13,23 +15,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
     private final CustomerDAO customerDAO;
     private final PasswordEncoder passwordEncoder;
+    private final CustomerDTOMapper customerDTOMapper;
 
     @Autowired
-    public CustomerService(@Qualifier("jdbc") CustomerDAO customerDAO, PasswordEncoder passwordEncoder) {
+    public CustomerService(@Qualifier("jpa") CustomerDAO customerDAO, PasswordEncoder passwordEncoder, CustomerDTOMapper customerDTOMapper) {
         this.customerDAO = customerDAO;
         this.passwordEncoder = passwordEncoder;
+        this.customerDTOMapper = customerDTOMapper;
     }
-    public List<Customer> getAllCustomers() {
-        return customerDAO.selectAllCustomers();
+    public List<CustomerDTO> getAllCustomers() {
+        return customerDAO.selectAllCustomers().stream().map(customerDTOMapper).collect(Collectors.toList());
     }
 
-    public Customer getCustomer(Integer id) {
-        return customerDAO.selectCustomerById(id)
+    public CustomerDTO getCustomer(Integer id) {
+        return customerDAO.selectCustomerById(id).map(customerDTOMapper)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "customer with id [%s] not found".formatted(id)
                 ));
@@ -57,7 +62,10 @@ public class CustomerService {
     }
 
     public void updateCustomer(Integer customerId, CustomerUpdateRequest request){
-        Customer customer = getCustomer(customerId);
+        Customer customer = customerDAO.selectCustomerById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                "customer with id [%s] not found".formatted(customerId)
+        ));
 
         boolean changes = false;
 
