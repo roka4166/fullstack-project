@@ -1,8 +1,10 @@
 package com.roman.services;
 
 import com.roman.DAO.CustomerDAO;
+import com.roman.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +20,6 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return customerDAO.selectUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("email not found"));
+        return customerDAO.selectByEmail(email).orElseThrow(() -> new UsernameNotFoundException("email not found"));
     }
 }

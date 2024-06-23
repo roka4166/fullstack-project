@@ -1,5 +1,6 @@
 package com.roman.jwt;
 
+import com.roman.exceptions.ResourceNotFoundException;
 import com.roman.services.CustomerUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,7 +43,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String subject = jwtUtil.getSubject(jwt);
 
         if(subject != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
             if(jwtUtil.isTokenValid(jwt, userDetails.getUsername())){
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -51,6 +52,5 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request,response);
-
     }
 }

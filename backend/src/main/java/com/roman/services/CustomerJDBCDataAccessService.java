@@ -79,7 +79,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
     }
 
     @Override
-    public Optional<Customer> selectUserByEmail(String email) {
+    public Optional<Customer> selectByEmail(String email) {
         String sql = "SELECT * FROM customer WHERE email = ?";
         return jdbcTemplate.query(sql, customerRowMapper, email).stream().findFirst();
     }

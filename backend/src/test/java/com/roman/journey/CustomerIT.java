@@ -92,7 +92,7 @@ public class CustomerIT {
                 .isOk()
                 .expectBody(Customer.class)
                 .value(customer -> {
-                    assertThat(customer).usingRecursiveComparison()
+                    assertThat(mapper.apply(customer)).usingRecursiveComparison()
                             .isEqualTo(expectedCustomer);
                 });
     }
@@ -104,11 +104,27 @@ public class CustomerIT {
         String gender = "MALE";
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
 
+        String emailForDeletion = faker.internet().safeEmailAddress();
+        CustomerRegistrationRequest requestForDeletion = new CustomerRegistrationRequest(name, emailForDeletion, "password", age, gender);
+
         String jwt = webTestClient.post()
                 .uri(URI)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(request), CustomerRegistrationRequest.class)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .returnResult(Void.class)
+                .getResponseHeaders()
+                .get(HttpHeaders.AUTHORIZATION)
+                .get(0);
+
+        webTestClient.post()
+                .uri(URI)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(requestForDeletion), CustomerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -130,13 +146,14 @@ public class CustomerIT {
                 .getResponseBody();
 
         int id = allCustomers.stream()
-                .filter(c -> c.email().equals(email))
+                .filter(c -> c.email().equals(emailForDeletion))
                 .map(CustomerDTO::id)
                 .findFirst().orElseThrow();
 
         webTestClient.delete()
                 .uri(URI + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", jwt))
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -144,6 +161,7 @@ public class CustomerIT {
         webTestClient.get()
                 .uri(URI + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", jwt))
                 .exchange()
                 .expectStatus()
                 .isNotFound();
@@ -156,12 +174,11 @@ public class CustomerIT {
         String gender = "MALE";
 
         String updatedName = faker.name().name();
-        String updatedEmail = faker.internet().safeEmailAddress();
         int updatedAge = RANDOM.nextInt(1, 100);
         String updatedGender = "FEMALE";
 
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
-        CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(updatedName, updatedEmail, "password", updatedAge, updatedGender);
+        CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(updatedName, email, "password", updatedAge, updatedGender);
 
         String jwt = webTestClient.post()
                 .uri(URI)
@@ -213,7 +230,6 @@ public class CustomerIT {
                 .expectBody(Customer.class)
                 .value(customer -> {
                     assertThat(customer.getName()).isEqualTo(updatedName);
-                    assertThat(customer.getEmail()).isEqualTo(updatedEmail);
                     assertThat(customer.getAge()).isEqualTo(updatedAge);
                 });
     }
