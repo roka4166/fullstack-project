@@ -55,7 +55,6 @@ const LoginForm = () => {
             initialValues={{ email: '', password: '' }}
             onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(true);
-                console.log("Form Values: ", values); // Debug log
                 login(values).then(res => {
                     navigate("/dashboard");
                     console.log("Successfully logged in");

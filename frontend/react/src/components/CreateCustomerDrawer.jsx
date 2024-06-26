@@ -9,7 +9,7 @@ import {
     DrawerOverlay,
     useDisclosure
 } from "@chakra-ui/react";
-import CreateCustomerForm from "./CreateCustomerForm";
+import CreateCustomerForm from "./shared/CreateCustomerForm";
 
 const AddIcon = () => "+";
 const CloseIcon = () => "X";
@@ -32,7 +32,7 @@ const DrawerForm = ({fetchCustomers}) => {
             <DrawerHeader>Create new customer</DrawerHeader>
   
             <DrawerBody>
-              <CreateCustomerForm fetchCustomers={fetchCustomers}/>
+              <CreateCustomerForm onSuccess={fetchCustomers}/>
             </DrawerBody>
   
             <DrawerFooter>
