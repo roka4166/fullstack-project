@@ -31,16 +31,15 @@ import {
   FiBell,
   FiChevronDown,
 } from 'react-icons/fi'
+import { useAuth } from '../context/AuthContext'
 
 
 
 const LinkItems = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
-]
+  {name: 'Home', route: '/dashboard', icon: FiHome},
+  {name: 'Customers', route: '/dashboard/customers'},
+  {name: 'Settings', route: '/dashboard/settings', icon: FiSettings},
+];
 
 const SidebarContent = ({ onClose, ...rest }) => {
   return (
@@ -111,6 +110,7 @@ const NavItem = ({ icon, children, ...rest }) => {
 }
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const { logOut, customer } = useAuth()
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -151,15 +151,17 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   }
                 />
                 <VStack
-                  display={{ base: 'none', md: 'flex' }}
-                  alignItems="flex-start"
-                  spacing="1px"
-                  ml="2">
-                  <Text fontSize="sm">Justina Clark</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    Admin
-                  </Text>
-                </VStack>
+                                    display={{base: 'none', md: 'flex'}}
+                                    alignItems="flex-start"
+                                    spacing="1px"
+                                    ml="2">
+                                    <Text fontSize="sm">{customer?.username}</Text>
+                                    {customer?.roles.map((role, id) => (
+                                        <Text key={id} fontSize="xs" color="gray.600">
+                                            {role}
+                                        </Text>
+                                    ))}
+                                </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
                   <FiChevronDown />
                 </Box>
@@ -172,7 +174,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={() => logOut()}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

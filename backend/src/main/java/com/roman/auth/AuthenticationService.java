@@ -31,7 +31,7 @@ public class AuthenticationService {
         ));
         Customer customer = (Customer) authentication.getPrincipal();
         CustomerDTO customerDTO = mapper.apply(customer);
-        String jwt = jwtUtil.issueToken(customerDTO.email(), "ROLE_USER");
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwt);
+        String jwt = jwtUtil.issueToken(customerDTO.email(), customerDTO.roles());
+        return new AuthenticationResponse(customerDTO, jwt);
     }
 }
