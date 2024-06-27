@@ -26,7 +26,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
 
     @Override
     public Optional<Customer> selectCustomerById(Integer customerId) {
-        String sql = "SELECT * FROM customer WHERE id = ?";
+        String sql = "SELECT * FROM customer WHERE id = ? LIMIT 5";
         return jdbcTemplate.query(sql, customerRowMapper, customerId).stream().findFirst();
     }
 

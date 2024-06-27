@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customer", uniqueConstraints = {@UniqueConstraint(name = "customer_email_unique", columnNames = "email")})
@@ -42,10 +43,15 @@ public class Customer implements UserDetails {
             nullable = false
     )
     private String password;
+    @Column(
+            nullable = false
+    )
+    private String pictureId;
 
     public Customer(){}
 
-    public Customer(Integer id, String name, String email, String password, Integer age, String gender) {
+    public Customer(Integer id, String name, String email, String password, Integer age,
+                    String gender, String pictureID) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -54,12 +60,14 @@ public class Customer implements UserDetails {
         this.password = password;
     }
 
-    public Customer(String name, String email, String password, Integer age, String gender) {
+    public Customer(String name, String email, String password, Integer age,
+                    String gender, String pictureID) {
         this.name = name;
         this.email = email;
         this.age = age;
         this.gender = gender;
         this.password = password;
+
     }
 
 
@@ -140,5 +148,25 @@ public class Customer implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(String pictureID) {
+        this.pictureId = pictureID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer customer)) return false;
+        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age) && Objects.equals(gender, customer.gender) && Objects.equals(password, customer.password) && Objects.equals(pictureId, customer.pictureId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, age, gender, password, pictureId);
     }
 }

@@ -50,7 +50,7 @@ public class CustomerService {
                         request.email(),
                         passwordEncoder.encode(request.password()),
                         request.age(),
-                        request.gender())
+                        request.gender(), )
         );
     }
 
@@ -92,5 +92,40 @@ public class CustomerService {
         }
 
         customerDAO.updateCustomer(customer);
+    }
+
+    public void uploadCustomerProfileImage(Integer customerId,
+                                           MultipartFile file) {
+        checkIfCustomerExistsOrThrow(customerId);
+        String profileImageId = UUID.randomUUID().toString();
+        try {
+            s3Service.putObject(
+                    s3Buckets.getCustomer(),
+                    "profile-images/%s/%s".formatted(customerId, profileImageId),
+                    file.getBytes()
+            );
+        } catch (IOException e) {
+            throw new RuntimeException("failed to upload profile image", e);
+        }
+        customerDao.updateCustomerProfileImageId(profileImageId, customerId);
+    }
+
+    public byte[] getCustomerProfileImage(Integer customerId) {
+        var customer = customerDao.selectCustomerById(customerId)
+                .map(customerDTOMapper)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "customer with id [%s] not found".formatted(customerId)
+                ));
+
+        if (StringUtils.isBlank(customer.profileImageId())) {
+            throw new ResourceNotFoundException(
+                    "customer with id [%s] profile image not found".formatted(customerId));
+        }
+
+        byte[] profileImage = s3Service.getObject(
+                s3Buckets.getCustomer(),
+                "profile-images/%s/%s".formatted(customerId, customer.profileImageId())
+        );
+        return profileImage;
     }
 }

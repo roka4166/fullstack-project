@@ -4,6 +4,8 @@ import com.roman.DAO.CustomerDAO;
 import com.roman.models.Customer;
 import com.roman.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,8 @@ public class CustomerJPADataAccessService implements CustomerDAO {
 
     @Override
     public List<Customer> selectAllCustomers() {
-        return customerRepository.findAll();
+        Page<Customer> page = customerRepository.findAll(Pageable.ofSize(5));
+        return page.getContent();
     }
 
     @Override

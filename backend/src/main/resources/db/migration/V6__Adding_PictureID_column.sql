@@ -1,0 +1,1 @@
+alter table customer add column pictureid varchar(200) not null default 'foo'
