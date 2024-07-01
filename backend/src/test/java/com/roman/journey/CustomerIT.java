@@ -13,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Random;
 
@@ -27,9 +26,12 @@ public class CustomerIT {
 
     private final Faker faker = new Faker();
 
+
     private final CustomerDTOMapper mapper = new CustomerDTOMapper();
+
     @Autowired
     private WebTestClient webTestClient;
+
 
     @Test
     void itShouldRegisterCustomer() {
@@ -37,7 +39,7 @@ public class CustomerIT {
         String email = faker.internet().safeEmailAddress();
         int age = RANDOM.nextInt(1, 100);
         String gender = "MALE";
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email,"password", age, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email,"password", age, gender, "foo");
 
         String jwt = webTestClient.post()
                 .uri(URI)
@@ -53,7 +55,7 @@ public class CustomerIT {
                 .get(0);
 
         List<CustomerDTO> allCustomers = webTestClient.get()
-                .uri(URI)
+                .uri(URI+"/all")
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", jwt))
                 .exchange()
@@ -102,10 +104,10 @@ public class CustomerIT {
         String email = faker.internet().safeEmailAddress();
         int age = RANDOM.nextInt(1, 100);
         String gender = "MALE";
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender, "foo");
 
         String emailForDeletion = faker.internet().safeEmailAddress();
-        CustomerRegistrationRequest requestForDeletion = new CustomerRegistrationRequest(name, emailForDeletion, "password", age, gender);
+        CustomerRegistrationRequest requestForDeletion = new CustomerRegistrationRequest(name, emailForDeletion, "password", age, gender, "foo");
 
         String jwt = webTestClient.post()
                 .uri(URI)
@@ -134,7 +136,7 @@ public class CustomerIT {
                 .get(0);
 
         List<CustomerDTO> allCustomers = webTestClient.get()
-                .uri(URI)
+                .uri(URI+"/all")
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", jwt))
                 .exchange()
@@ -167,7 +169,7 @@ public class CustomerIT {
                 .isNotFound();
     }
     @Test
-    void canUpdateCustomer(){
+    void canUpdateCustomer() {
         String name = faker.name().name();
         String email = faker.internet().safeEmailAddress();
         int age = RANDOM.nextInt(1, 100);
@@ -177,8 +179,8 @@ public class CustomerIT {
         int updatedAge = RANDOM.nextInt(1, 100);
         String updatedGender = "FEMALE";
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender);
-        CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(updatedName, email, "password", updatedAge, updatedGender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, "password", age, gender, "foo");
+        CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(updatedName, email, "password", updatedAge, updatedGender, "foo");
 
         String jwt = webTestClient.post()
                 .uri(URI)
@@ -194,7 +196,7 @@ public class CustomerIT {
                 .get(0);
 
         List<CustomerDTO> allCustomers = webTestClient.get()
-                .uri(URI)
+                .uri(URI + "/all")
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", jwt))
                 .exchange()

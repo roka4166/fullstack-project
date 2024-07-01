@@ -1,0 +1,1 @@
+alter table customer rename column pictureid to "picture_id";

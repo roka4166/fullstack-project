@@ -6,6 +6,6 @@ public record CustomerRegistrationRequest(
         String password,
 
         Integer age,
-        String gender
-) {
-}
+        String gender,
+        String pictureId
+){}

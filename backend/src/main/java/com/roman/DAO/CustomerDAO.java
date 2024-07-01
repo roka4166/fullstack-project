@@ -1,12 +1,15 @@
 package com.roman.DAO;
 
+import com.roman.DTO.CustomerDTO;
 import com.roman.models.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CustomerDAO {
-    List<Customer> selectAllCustomers();
+    Page<Customer> selectAllCustomers(Pageable pageable);
     Optional<Customer> selectCustomerById(Integer customerId);
 
     void insertCustomer(Customer customer);
@@ -20,4 +23,7 @@ public interface CustomerDAO {
 
     Optional<Customer> selectByEmail(String email);
 
+    void updateCustomerProfileImageId(String profileImageId, Integer customerId);
+
+    List<Customer> getAllCustomers();
 }

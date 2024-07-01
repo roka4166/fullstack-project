@@ -2,6 +2,9 @@ package com.roman.services;
 
 import com.roman.DAO.CustomerDAO;
 import com.roman.models.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,23 +22,33 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> selectAllCustomers() {
-        String sql = "SELECT * FROM customer";
-        return jdbcTemplate.query(sql, customerRowMapper);
+    public Page<Customer> selectAllCustomers(Pageable pageable) {
+        int pageNumber = pageable.getPageNumber();
+
+        int offset = (pageNumber - 1);
+        String sql = "SELECT * FROM customer LIMIT 5 OFFSET ?";
+        List<Customer> customers = jdbcTemplate.query(sql, customerRowMapper, offset);
+
+        String countQuery = "SELECT COUNT(*) FROM customer";
+        int totalCount = Integer.parseInt(countQuery);
+
+        return new PageImpl<>(customers, pageable, totalCount);
     }
+
 
     @Override
     public Optional<Customer> selectCustomerById(Integer customerId) {
-        String sql = "SELECT * FROM customer WHERE id = ? LIMIT 5";
+        String sql = "SELECT * FROM customer WHERE id = ?";
         return jdbcTemplate.query(sql, customerRowMapper, customerId).stream().findFirst();
     }
 
     @Override
     public void insertCustomer(Customer customer) {
-        String sql = "INSERT INTO customer(name, email, password, age, gender) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO customer(name, email, password, age, gender, picture_id) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, customer.getName(),
                 customer.getEmail(), customer.getPassword(),
-                customer.getAge(), customer.getGender());
+                customer.getAge(), customer.getGender(),
+                customer.getPicture_id());
     }
 
     @Override
@@ -82,5 +95,17 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
     public Optional<Customer> selectByEmail(String email) {
         String sql = "SELECT * FROM customer WHERE email = ?";
         return jdbcTemplate.query(sql, customerRowMapper, email).stream().findFirst();
+    }
+
+    @Override
+    public void updateCustomerProfileImageId(String pictureID, Integer customerId) {
+        String sql = "UPDATE customer SET picture_id = ? WHERE id = ?";
+        jdbcTemplate.update(sql, pictureID, customerId);
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        String sql = "SELECT * FROM customer";
+        return jdbcTemplate.query(sql, customerRowMapper);
     }
 }

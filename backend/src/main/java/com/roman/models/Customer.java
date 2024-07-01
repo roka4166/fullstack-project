@@ -43,31 +43,30 @@ public class Customer implements UserDetails {
             nullable = false
     )
     private String password;
-    @Column(
-            nullable = false
-    )
-    private String pictureId;
+    @Column(name = "picture_id")
+    private String picture_id;
 
     public Customer(){}
 
     public Customer(Integer id, String name, String email, String password, Integer age,
-                    String gender, String pictureID) {
+                    String gender, String picture_id) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.age = age;
         this.gender = gender;
         this.password = password;
+        this.picture_id = picture_id;
     }
 
     public Customer(String name, String email, String password, Integer age,
-                    String gender, String pictureID) {
+                    String gender, String picture_id) {
         this.name = name;
         this.email = email;
         this.age = age;
         this.gender = gender;
         this.password = password;
-
+        this.picture_id = picture_id;
     }
 
 
@@ -150,23 +149,23 @@ public class Customer implements UserDetails {
         return true;
     }
 
-    public String getPictureId() {
-        return pictureId;
+    public String getPicture_id() {
+        return picture_id;
     }
 
-    public void setPictureId(String pictureID) {
-        this.pictureId = pictureID;
+    public void setPicture_id(String pictureId) {
+        this.picture_id = pictureId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Customer customer)) return false;
-        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age) && Objects.equals(gender, customer.gender) && Objects.equals(password, customer.password) && Objects.equals(pictureId, customer.pictureId);
+        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age) && Objects.equals(gender, customer.gender) && Objects.equals(password, customer.password) && Objects.equals(picture_id, customer.picture_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, age, gender, password, pictureId);
+        return Objects.hash(id, name, email, age, gender, password, picture_id);
     }
 }

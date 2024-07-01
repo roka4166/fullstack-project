@@ -37,11 +37,7 @@ const AuthProvider = ({ children }) => {
             performLogin(usernameAndPassword).then(res => {
                 const jwtToken = res.headers["authorization"];
                 localStorage.setItem("access_token", jwtToken);
-                const decodedToken = jwtDecode(jwtToken);
-            setCustomer({
-                username: decodedToken.sub,
-                roles: decodedToken.scopes
-            })
+            setCustomerFromToken(jwtToken)
                 resolve(res);
             }).catch(err => {
                 reject(err);
@@ -72,7 +68,8 @@ const AuthProvider = ({ children }) => {
             customer,
             login,
             logOut,
-            isCustomerAuthenticated
+            isCustomerAuthenticated,
+            setCustomerFromToken
         }}>
             {children}
         </AuthContext.Provider>

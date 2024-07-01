@@ -30,13 +30,13 @@ public class DefaultExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
     }
 
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity<ApiError> handleException(BadCredentialsException e,
-//                                                    HttpServletRequest request) {
-//        ApiError apiError = new ApiError(request.getRequestURI(), e.getMessage(), HttpStatus.UNAUTHORIZED.value(), LocalDateTime.now());
-//
-//        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
-//    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiError> handleException(BadCredentialsException e,
+                                                    HttpServletRequest request) {
+        ApiError apiError = new ApiError(request.getRequestURI(), e.getMessage(), HttpStatus.UNAUTHORIZED.value(), LocalDateTime.now());
+
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleException(Exception e,
                                                     HttpServletRequest request) {

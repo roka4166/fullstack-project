@@ -24,10 +24,11 @@ class CustomerRowMapperTest {
         when(resultSet.getInt("age")).thenReturn(23);
         when(resultSet.getString("gender")).thenReturn("MALE");
         when(resultSet.getString("password")).thenReturn("password");
-        //When
+        when(resultSet.getString("picture_id")).thenReturn("foo");
+
         Customer actual = rowMapper.mapRow(resultSet, 1);
-        //Then
-        Customer expected = new Customer(1, "alex", "email", "password", 23, "MALE", );
+
+        Customer expected = new Customer(1, "alex", "email", "password", 23, "MALE", "foo" );
 
         assertThat(actual).isEqualToComparingFieldByField(expected);
 

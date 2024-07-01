@@ -2,18 +2,21 @@ package com.roman.controllers;
 
 import com.roman.DTO.CustomerDTO;
 import com.roman.jwt.JWTUtil;
-import com.roman.models.Customer;
 import com.roman.services.CustomerService;
 import com.roman.utils.CustomerRegistrationRequest;
 import com.roman.utils.CustomerUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.function.ServerRequest;
 
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,9 +30,18 @@ public class CustomerController{
         this.jwtUtil = jwtUtil;
     }
 
-    @GetMapping
-    public List<CustomerDTO> getCustomers() {
-        return customerService.getAllCustomers();
+    @GetMapping()
+    public ResponseEntity<List<CustomerDTO>> getCustomers(
+            @RequestParam(defaultValue = "1", required = false) int page){
+        Pageable pageable = PageRequest.of(page-1, 5);
+        Page<CustomerDTO> customersPage = customerService.getCustomers(pageable);
+        List<CustomerDTO> customers = customersPage.getContent();
+        return ResponseEntity.ok().body(customers);
+    }
+    @GetMapping("/all")
+    public ResponseEntity<List<CustomerDTO>> getCustomers(){
+
+        return ResponseEntity.ok().body(customerService.getAllCustomers());
     }
 
     @GetMapping("{customerId}")
@@ -68,7 +80,7 @@ public class CustomerController{
             produces = MediaType.IMAGE_JPEG_VALUE
     )
     public byte[] getCustomerProfileImage(
-            @PathVariable("customerId") Integer customerId) {
+            @PathVariable("customerId") Integer customerId) throws IOException {
         return customerService.getCustomerProfileImage(customerId);
     }
 

@@ -21,8 +21,8 @@ import {
   AlertDialogOverlay,
 } from '@chakra-ui/react'
 
-import {useRef} from 'react';
-import { deleteCustomer } from '../services/client';
+import {useEffect, useRef, useState} from 'react';
+import { deleteCustomer, fetchCustomerProfilePicture} from '../services/client';
 import { errorNotification, successNotification } from '../services/notification';
 import UpdateCustomerDrawer from './UpdateCustomerDrawer';
 
@@ -30,6 +30,23 @@ export default function CardWithImage({id, name, email, age, gender, fetchCustom
   const imageGender = gender === 'MALE' ? 'men' : 'women';
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = useRef()
+
+  const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+
+  useEffect(() => {
+    const fetchProfilePicture = async () => {
+      try {
+        const url = await fetchCustomerProfilePicture(id);
+        setProfilePictureUrl(url);
+      } catch (error) {
+        console.error('Error fetching profile picture:', error);
+        errorNotification('Failed to fetch profile picture');
+      }
+    };
+
+    fetchProfilePicture();
+  }, [id]);
+
   return (
     <Center py={6}>
       <Box
@@ -52,7 +69,7 @@ export default function CardWithImage({id, name, email, age, gender, fetchCustom
           <Avatar
             size={'xl'}
             src={
-              `https://randomuser.me/api/portraits/med/${imageGender}/${id}.jpg`
+              profilePictureUrl
             }
             css={{
               border: '2px solid white',

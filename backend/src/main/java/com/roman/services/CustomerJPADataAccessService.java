@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +19,8 @@ public class CustomerJPADataAccessService implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> selectAllCustomers() {
-        Page<Customer> page = customerRepository.findAll(Pageable.ofSize(5));
-        return page.getContent();
+    public Page<Customer> selectAllCustomers(Pageable pageable) {
+        return customerRepository.findAll(pageable);
     }
 
     @Override
@@ -46,6 +44,18 @@ public class CustomerJPADataAccessService implements CustomerDAO {
     }
 
     @Override
+    public void updateCustomerProfileImageId(String pictureId, Integer customerId) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow();
+        customer.setPicture_id(pictureId);
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+
+    @Override
     public boolean existsPersonWithId(Integer customerId) {
         return customerRepository.existsById(customerId);
     }
@@ -59,5 +69,7 @@ public class CustomerJPADataAccessService implements CustomerDAO {
     public boolean existsPersonWithEmail(String email) {
         return customerRepository.existsCustomerByEmail(email);
     }
+
+
 
 }

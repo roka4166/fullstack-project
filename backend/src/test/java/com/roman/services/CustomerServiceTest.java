@@ -15,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -44,13 +46,13 @@ class CustomerServiceTest {
         //When
         underTest.getAllCustomers();
         //Then
-        verify(customerDAO).selectAllCustomers();
+        verify(customerDAO).getAllCustomers();
     }
 
     @Test
     void itShouldGetCustomer() {
         int id = 1;
-        Customer customer = new Customer(id, "hello", "email", "password", 14, "MALE", );
+        Customer customer = new Customer(id, "hello", "email", "password", 14, "MALE", "foo" );
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
         CustomerDTO expected = customerDTOMapper.apply(customer);
@@ -75,7 +77,7 @@ class CustomerServiceTest {
         String email = "email";
         String gender = "MALE";
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest("alex", email,"password", 19, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest("alex", email,"password", 19, gender, "foo");
 
         when(customerDAO.existsPersonWithEmail(email)).thenReturn(false);
 
@@ -104,7 +106,7 @@ class CustomerServiceTest {
         String email = "email";
         String gender = "MALE";
 
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest("alex", email, "password", 19, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest("alex", email, "password", 19, gender, "foo");
 
         when(customerDAO.existsPersonWithEmail(email)).thenReturn(true);
         //When
@@ -145,7 +147,7 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         String gender = "MALE";
-        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, );
+        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, "foo" );
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         String updatedEmail = "email2";
@@ -169,7 +171,7 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         String gender = "MALE";
-        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, );
+        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, "foo");
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         CustomerUpdateRequest request = new CustomerUpdateRequest("hello2", null, null);
@@ -191,7 +193,7 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         String gender = "MALE";
-        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, );
+        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, "foo");
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         String updatedEmail = "email2";
@@ -215,7 +217,7 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         String gender = "MALE";
-        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, );
+        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, "foo");
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         CustomerUpdateRequest request = new CustomerUpdateRequest(null, null, 23);
@@ -237,7 +239,7 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         String gender = "MALE";
-        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, );
+        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, "foo");
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         String email = "takenEmail";
@@ -255,7 +257,7 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         String gender = "MALE";
-        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, );
+        Customer customer = new Customer(id, "hello", "email", "password", 14, gender, "foo");
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
         //When
         String email = "takenEmail";

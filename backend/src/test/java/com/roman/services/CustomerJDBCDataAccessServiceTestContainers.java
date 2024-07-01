@@ -5,6 +5,9 @@ import com.roman.models.Customer;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,11 +28,12 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         // Given
         Customer customer = new Customer(
                 FAKER.name().fullName(),
-                FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(), "password", 20, "MALE", );
+                FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
+                "password", 20, "MALE", "foo" );
         underTest.insertCustomer(customer);
 
         // When
-        List<Customer> actual = underTest.selectAllCustomers();
+        List<Customer> actual = underTest.getAllCustomers();
 
         // Then
         assertThat(actual).isNotEmpty();
@@ -41,11 +45,11 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Customer customer = new Customer(
                 FAKER.name().fullName(),
-                email, "password", 20, "MALE", );
+                email, "password", 20, "MALE", "foo" );
 
         underTest.insertCustomer(customer);
 
-        int id = Math.toIntExact(underTest.selectAllCustomers()
+        int id = Math.toIntExact(underTest.getAllCustomers()
                 .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
@@ -83,7 +87,7 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         String name = FAKER.name().fullName();
         Customer customer = new Customer(
                 name,
-                email, "password", 20, "MALE", );
+                email, "password", 20, "MALE", "foo" );
 
         underTest.insertCustomer(customer);
 
@@ -112,11 +116,11 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Customer customer = new Customer(
                 FAKER.name().fullName(),
-                email, "password", 20, "MALE", );
+                email, "password", 20, "MALE", "foo" );
 
         underTest.insertCustomer(customer);
 
-        int id = Math.toIntExact(underTest.selectAllCustomers()
+        int id = Math.toIntExact(underTest.getAllCustomers()
                 .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
@@ -148,11 +152,11 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Customer customer = new Customer(
                 FAKER.name().fullName(),
-                email, "password", 20, "MALE", );
+                email, "password", 20, "MALE", "foo" );
 
         underTest.insertCustomer(customer);
 
-        int id = Math.toIntExact(underTest.selectAllCustomers()
+        int id = Math.toIntExact(underTest.getAllCustomers()
                 .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
@@ -173,11 +177,11 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Customer customer = new Customer(
                 FAKER.name().fullName(),
-                email, "password", 20, "MALE", );
+                email, "password", 20, "MALE", "foo" );
 
         underTest.insertCustomer(customer);
 
-        int id = Math.toIntExact(underTest.selectAllCustomers()
+        int id = Math.toIntExact(underTest.getAllCustomers()
                 .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
@@ -186,7 +190,6 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
 
         var newName = "foo";
 
-        // When age is name
         Customer update = new Customer();
         update.setId(id);
         update.setName(newName);
@@ -210,11 +213,11 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Customer customer = new Customer(
                 FAKER.name().fullName(),
-                email, "password", 20, "MALE", );
+                email, "password", 20, "MALE", "foo" );
 
         underTest.insertCustomer(customer);
 
-        int id = Math.toIntExact(underTest.selectAllCustomers()
+        int id = Math.toIntExact(underTest.getAllCustomers()
                 .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
@@ -223,7 +226,6 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
 
         var newEmail = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
 
-        // When email is changed
         Customer update = new Customer();
         update.setId(id);
         update.setEmail(newEmail);
@@ -247,11 +249,11 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Customer customer = new Customer(
                 FAKER.name().fullName(),
-                email, "password", 20, "MALE", );
+                email, "password", 20, "MALE", "foo");
 
         underTest.insertCustomer(customer);
 
-        int id = Math.toIntExact(underTest.selectAllCustomers()
+        int id = Math.toIntExact(underTest.getAllCustomers()
                 .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
@@ -260,7 +262,6 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
 
         var newAge = 100;
 
-        // When age is changed
         Customer update = new Customer();
         update.setId(id);
         update.setAge(newAge);
@@ -272,7 +273,7 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
 
         assertThat(actual).isPresent().hasValueSatisfying(c -> {
             assertThat(c.getId()).isEqualTo(id);
-            assertThat(c.getAge()).isEqualTo(newAge); // change
+            assertThat(c.getAge()).isEqualTo(newAge);
             assertThat(c.getName()).isEqualTo(customer.getName());
             assertThat(c.getEmail()).isEqualTo(customer.getEmail());
         });
@@ -284,18 +285,17 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Customer customer = new Customer(
                 FAKER.name().fullName(),
-                email, "password", 20, "MALE", );
+                email, "password", 20, "MALE", "foo" );
 
         underTest.insertCustomer(customer);
 
-        int id = Math.toIntExact(underTest.selectAllCustomers()
+        int id = Math.toIntExact(underTest.getAllCustomers()
                 .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
                 .findFirst()
                 .orElseThrow());
 
-        // When update with new name, age and email
         Customer update = new Customer();
         update.setId(id);
         update.setName("foo");
@@ -316,39 +316,39 @@ class CustomerJDBCDataAccessServiceTestContainers extends AbstractTestContainers
         });
     }
 
-//    @Test
-//    void willNotUpdateWhenNothingToUpdate() {
-//        // Given
-//        String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
-//        Customer customer = new Customer(
-//                FAKER.name().fullName(),
-//                email,
-//                "password", 20,
-//                Gender.MALE);
-//
-//        underTest.insertCustomer(customer);
-//
-//        int id = Math.toIntExact(underTest.selectAllCustomers()
-//                .stream()
-//                .filter(c -> c.getEmail().equals(email))
-//                .map(Customer::getId)
-//                .findFirst()
-//                .orElseThrow());
-//
-//        // When update without no changes
-//        Customer update = new Customer();
-//        update.setId((long) id);
-//
-//        underTest.updateCustomer(update);
-//
-//        // Then
-//        Optional<Customer> actual = underTest.selectCustomerById(id);
-//
-//        assertThat(actual).isPresent().hasValueSatisfying(c -> {
-//            assertThat(c.getId()).isEqualTo(id);
-//            assertThat(c.getAge()).isEqualTo(customer.getAge());
-//            assertThat(c.getName()).isEqualTo(customer.getName());
-//            assertThat(c.getEmail()).isEqualTo(customer.getEmail());
-//        });
-//    }
+    @Test
+    void willNotUpdateWhenNothingToUpdate() {
+        // Given
+        String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
+        Customer customer = new Customer(
+                FAKER.name().fullName(),
+                email,
+                "password", 20,
+                "MALE",
+                "FOO");
+
+        underTest.insertCustomer(customer);
+
+        int id = Math.toIntExact(underTest.getAllCustomers()
+                .stream()
+                .filter(c -> c.getEmail().equals(email))
+                .map(Customer::getId)
+                .findFirst()
+                .orElseThrow());
+
+        Customer update = new Customer();
+        update.setId(id);
+
+        underTest.updateCustomer(update);
+
+        // Then
+        Optional<Customer> actual = underTest.selectCustomerById(id);
+
+        assertThat(actual).isPresent().hasValueSatisfying(c -> {
+            assertThat(c.getId()).isEqualTo(id);
+            assertThat(c.getAge()).isEqualTo(customer.getAge());
+            assertThat(c.getName()).isEqualTo(customer.getName());
+            assertThat(c.getEmail()).isEqualTo(customer.getEmail());
+        });
+    }
 }

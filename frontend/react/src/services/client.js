@@ -6,9 +6,12 @@ const getAuthConfig = () => ({
     }
 })
 
-export const getCustomers = async () => {
+export const getCustomers = async (page) => {
     try {
-       return (await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`, getAuthConfig()));
+       return (await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`, {
+           params: { page },
+           ...getAuthConfig()
+       }));
     } catch (e) {
         console.error("Error fetching customers:", e);
         throw e;
@@ -48,4 +51,34 @@ export const login = async (usernameAndPassword) => {
         console.error("Error logging in: something is wrong:", e);
         throw e;
     }
+};
+
+export const uploadCustomerProfilePicture = async (id, formData) => {
+    try {
+        return axios.post(
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}/profile-image`,
+            formData,
+            {
+                ...getAuthConfig(),
+                'Content-Type' : 'multipart/form-data'
+            }
+        );
+    } catch (e) {
+        throw e;
+    }
+};
+export const customerProfilePictureUrl = (id) =>
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}/profile-image`;
+
+export const fetchCustomerProfilePicture = async (id) => {
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}/profile-image`;
+    const response = await axios.get(url, { responseType: 'blob', ...getAuthConfig() });
+    const blob = response.data;
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 };

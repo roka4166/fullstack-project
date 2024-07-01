@@ -34,7 +34,7 @@ public class AuthenticationIT {
         int age = RANDOM.nextInt(1, 100);
         String gender = "MALE";
         String password = "password";
-        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, password, age, gender);
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(name, email, password, age, gender, "foo");
 
         AuthenticationRequest authenticationRequest = new AuthenticationRequest(email, password);
 

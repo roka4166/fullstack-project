@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 
 import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
@@ -23,9 +24,9 @@ class CustomerJPADataAccessServiceTest {
     @Test
     void itShouldSelectAllCustomers() {
         //When
-        underTest.selectAllCustomers();
+        underTest.selectAllCustomers(Pageable.ofSize(5).withPage(1));
         //Then
-        verify(customerRepository).findAll();
+        verify(customerRepository).findAll(Pageable.ofSize(5).withPage(1));
 
     }
 
@@ -43,7 +44,7 @@ class CustomerJPADataAccessServiceTest {
     @Test
     void itShouldInsertCustomer() {
         // Given
-        Customer customer = new Customer(1, "drf", "hello", "password", 2, "MALE", );
+        Customer customer = new Customer(1, "drf", "hello", "password", 2, "MALE", "foo" );
         //When
         underTest.insertCustomer(customer);
         //Then
@@ -54,7 +55,7 @@ class CustomerJPADataAccessServiceTest {
     @Test
     void itShouldUpdateCustomer() {
         // Given
-        Customer customer = new Customer(1, "drf", "hello", "password", 2, "MALE", );
+        Customer customer = new Customer(1, "drf", "hello", "password", 2, "MALE", "foo" );
         //When
         underTest.updateCustomer(customer);
         //Then
