@@ -1,6 +1,4 @@
 package com.roman.DAO;
-
-import com.roman.DTO.CustomerDTO;
 import com.roman.models.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

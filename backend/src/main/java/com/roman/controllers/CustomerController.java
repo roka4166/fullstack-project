@@ -40,7 +40,6 @@ public class CustomerController{
     }
     @GetMapping("/all")
     public ResponseEntity<List<CustomerDTO>> getCustomers(){
-
         return ResponseEntity.ok().body(customerService.getAllCustomers());
     }
 

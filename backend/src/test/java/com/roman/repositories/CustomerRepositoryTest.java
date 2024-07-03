@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class CustomerRepositoryTestContainers extends AbstractTestContainers {
+class CustomerRepositoryTest extends AbstractTestContainers {
     @Autowired
     private CustomerRepository underTest;
     @Test

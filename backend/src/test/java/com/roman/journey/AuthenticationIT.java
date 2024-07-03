@@ -1,7 +1,6 @@
 package com.roman.journey;
 
 import com.github.javafaker.Faker;
-import com.roman.DTO.CustomerDTOMapper;
 import com.roman.auth.AuthenticationRequest;
 import com.roman.utils.CustomerRegistrationRequest;
 import org.junit.jupiter.api.Test;
@@ -22,8 +21,6 @@ public class AuthenticationIT {
     private static final String REGISTER_CUSTOMER_URI = "/api/v1/customers";
 
     private final Faker faker = new Faker();
-
-    private final CustomerDTOMapper mapper = new CustomerDTOMapper();
     @Autowired
     private WebTestClient webTestClient;
 
